@@ -26,6 +26,8 @@ namespace MoskoiBoi
         public void OtrisovkaShipsPlayer(Grid grid);
         public void GenerationOfShips();
         public void OtrisovkaShipsBots(Grid grid);
+        public bool CheckInPeresechenie(Grid grid, System.Windows.Point pt);
+
     }
 
     class Playing_Field : IPlaying
@@ -151,13 +153,13 @@ namespace MoskoiBoi
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    if (array[i,j] == 1)
+                    if (array[i, j] == 1)
                     {
                         int x_k = 0, y_k = 0;
                         x_k = -360 + i * 80;
                         y_k = -360 + j * 80;
                         OtrisovkaKorabl(x_k, y_k, grid);
-                    }                
+                    }
                 }
             }
         }
@@ -196,7 +198,7 @@ namespace MoskoiBoi
             ell.Background = color;
             grid.Children.Add(ell);
         }
-        
+
 
 
 
@@ -215,36 +217,36 @@ namespace MoskoiBoi
 
         private bool check_massiv_bot(int x, int y, int a = 1)
         {
-            if (arrayBot[x,y] == a)
+            if (arrayBot[x, y] == a)
             {
                 return false;
             }
             else
             {
                 return true;
-            }    
+            }
         }
 
         public bool GuningPlayer(Grid grid, System.Windows.Point pt) // Ход игрока
         {
-           int b = 0;
-           int x = Convert.ToInt32(pt.X), y = Convert.ToInt32(pt.Y);
-           int x_k = 0, y_k = 0;
-           x = (x - (int)grid.Margin.Left) / 40;
-           y = (y - (int)grid.Margin.Top) / 40;
-           x_k = -360 + x * 80;
-           y_k = -360 + y * 80;
+            int b = 0;
+            int x = Convert.ToInt32(pt.X), y = Convert.ToInt32(pt.Y);
+            int x_k = 0, y_k = 0;
+            x = (x - (int)grid.Margin.Left) / 40;
+            y = (y - (int)grid.Margin.Top) / 40;
+            x_k = -360 + x * 80;
+            y_k = -360 + y * 80;
 
-           if (arrayBot[x, y] == 1)
-           {
-               OtrisovkaPopal(x_k, y_k, grid);
-               return true;
-           }
-           else
-           {
-               OtrisovkaPromox(x_k, y_k, grid);
+            if (arrayBot[x, y] == 1)
+            {
+                OtrisovkaPopal(x_k, y_k, grid);
+                return true;
+            }
+            else
+            {
+                OtrisovkaPromox(x_k, y_k, grid);
                 return false;
-           }
+            }
         }
         public void CreateShips(Grid grid, System.Windows.Point pt) // Создание кораблей
         {
@@ -254,15 +256,15 @@ namespace MoskoiBoi
             y = (y - (int)grid.Margin.Top) / 40;
             x_k = -360 + x * 80;
             y_k = -360 + y * 80;
-            if (array[x,y] != 1)
+            if (array[x, y] != 1)
             {
-                game_zone(x,y,1);
+                game_zone(x, y, 1);
                 OtrisovkaKorabl(x_k, y_k, grid);
             }
             else
             {
                 ClearShips(x_k, y_k, grid);
-                game_zone(x,y,0);
+                game_zone(x, y, 0);
             }
         }
 
@@ -281,8 +283,8 @@ namespace MoskoiBoi
             for (int i = 0; i < 4; i++)
             {
                 int rand, rand2;
-                rand = random.Next(0,10);
-                rand2 = random.Next(0,10);
+                rand = random.Next(0, 10);
+                rand2 = random.Next(0, 10);
                 if (check_massiv_bot(rand, rand2))
                 {
                     game_zone_bot(rand, rand2, 1);
@@ -292,7 +294,7 @@ namespace MoskoiBoi
             for (int i = 0; i < 3; i++)
             {
                 int rand, rand2;
-                int ranoms = random.Next(1,4);
+                int ranoms = random.Next(1, 4);
                 rand = random.Next(0, 10);
                 rand2 = random.Next(rand, 10);
                 for (int j = 0; j < 2; j++)
@@ -319,31 +321,31 @@ namespace MoskoiBoi
 
         public void CorrectnesShips()
         {
-           
+
         }
 
         public void ChekingDeadShips(Grid grid)
         {
-        //   int x = 2;
-        //   int y = 2;
-        //   int x_k = 0, y_k = 0;
-        //   if (arrayHisortPlayer[x,y] == 1 && arrayBot[x,y] == 1)
-        //   {
-        //       x--;
-        //       x_k = -360 + x * 80;
-        //       y_k = -360 + y * 80;
-        //       for (int i = 0; i < 8; i++)
-        //       {
-        //           OtrisovkaPromox(x_k,y_k, grid);
-        //       }
-        //   }
+            //   int x = 2;
+            //   int y = 2;
+            //   int x_k = 0, y_k = 0;
+            //   if (arrayHisortPlayer[x,y] == 1 && arrayBot[x,y] == 1)
+            //   {
+            //       x--;
+            //       x_k = -360 + x * 80;
+            //       y_k = -360 + y * 80;
+            //       for (int i = 0; i < 8; i++)
+            //       {
+            //           OtrisovkaPromox(x_k,y_k, grid);
+            //       }
+            //   }
         }
-        
+
         public void Guning(Grid grid)
         {
             Random rand = new Random();
-            int x = rand.Next(0,10);
-            int y = rand.Next(0,10);
+            int x = rand.Next(0, 10);
+            int y = rand.Next(0, 10);
             Thread.Sleep(600);
             int x_k = 0, y_k = 0;
             x_k = -360 + x * 80;
@@ -373,15 +375,46 @@ namespace MoskoiBoi
         }
 
         // Хранение информации о ходах
-        public void StoringInformationAboutMoves(int x, int y) 
+        public void StoringInformationAboutMoves(int x, int y)
         {
-          //  array[]
+            //  array[]
         }
 
         // Проверка количества кораблей
         public void CheckingTheNumberOfShips()
         {
 
+        }
+
+
+        public bool CheckInPeresechenie(Grid grid, System.Windows.Point pt)
+        {
+
+            int x = Convert.ToInt32(pt.X), y = Convert.ToInt32(pt.Y);
+
+            int x_k = 0, y_k = 0;
+            x = (x - (int)grid.Margin.Left) / 40;
+            y = (y - (int)grid.Margin.Top) / 40;
+            x_k = -360 + x * 80;
+            y_k = -360 + y * 80;
+
+            if (arrayHisortBot[x, y] == 0)
+            {
+                if (arrayBot[x, y] == 0)
+                {
+                    arrayHisortBot[x, y] = 2;
+                    return true;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            else
+            {
+                MessageBox.Show("Уже были тута");
+                return false;
+            }
         }
     }
 }

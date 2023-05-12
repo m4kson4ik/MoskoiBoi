@@ -26,7 +26,7 @@ namespace MoskoiBoi
 
             Playing_Field.Context().GenerationOfShips();
             Playing_Field.Context().OtrisovkaShipsPlayer(GridPole);
-            //Playing_Field.Context().OtrisovkaShipsBots(Gridsopernik);
+            Playing_Field.Context().OtrisovkaShipsBots(Gridsopernik);
             Playing_Field.Context().GameDave(GridPole);
             Playing_Field.Context().GameDave(Gridsopernik);
         }
@@ -34,7 +34,10 @@ namespace MoskoiBoi
         private void GridPole_MouseUp(object sender, MouseButtonEventArgs e)
         {       
             System.Windows.Point pt = e.GetPosition(this);
-            Playing_Field.Context().GuningPlayer(GridPole, pt);
+            if (Playing_Field.Context().CheckInPeresechenie(GridPole, pt))
+            {
+                 Playing_Field.Context().GuningPlayer(GridPole, pt);
+            }
         }
 
         private void GridPole_MouseMove(object sender, MouseEventArgs e)
@@ -49,15 +52,20 @@ namespace MoskoiBoi
         private void Gridsopernik_MouseUp(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Point pt = e.GetPosition(this);
-            if (Playing_Field.Context().GuningPlayer(Gridsopernik, pt))
+            
+            if (Playing_Field.Context().CheckInPeresechenie(Gridsopernik, pt))
             {
-                MessageBox.Show("Вы попали! Ходите еще раз");
+                if (Playing_Field.Context().GuningPlayer(Gridsopernik, pt))
+                {
+                    MessageBox.Show("Вы попали! Ходите еще раз");
+                }
+                else
+                {
+                    Playing_Field.Context().Guning(GridPole);
+                }
                 return;
             }
-            else
-            {
-                Playing_Field.Context().Guning(GridPole);
-            }
+            
         }
     }
 }
