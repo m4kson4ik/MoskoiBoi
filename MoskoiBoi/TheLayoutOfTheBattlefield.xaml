@@ -8,10 +8,12 @@
         Title="TheLayoutOfTheBattlefield" Height="450" Width="800">
     <Grid>
         <Grid x:Name="gridShips" HorizontalAlignment="Left" Height="400" Margin="163,0,0,0" VerticalAlignment="Center" Width="400" Background="Gray" MouseUp="gridShips_MouseUp"/>
-        <Label x:Name="lbOneShips" Content="4" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Cursor="Hand"/>
-        <Label x:Name="lbTwoShips" Content="3" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lbThreeShips" Content="2" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top"/>
-        <Label x:Name="lbFourShips" Content="1" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top" Cursor="Hand"/>
+        <Label x:Name="lbOneShips" Content="4" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Cursor="Hand" MouseUp="lbOneShips_MouseUp"/>
+        <Label x:Name="lbThreeShips" Content="3" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" MouseUp="lbThreeShips_MouseUp_1"/>
+        <Label x:Name="lbTwoShips" Content="2" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top" MouseUp="lbTwoShips_MouseUp"/>
+        <Label x:Name="lbFourShips" Content="1" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top" Cursor="Hand" MouseUp="lbFourShips_MouseUp"/>
         <Button x:Name="btGo" Content="Button" HorizontalAlignment="Left" Height="51" Margin="639,366,0,0" VerticalAlignment="Top" Width="151" Click="btGo_Click"/>
+        <CheckBox Content="Горизонталь" HorizontalAlignment="Left" Margin="18,0,0,0" VerticalAlignment="Center"/>
+        <TextBox x:Name="tbShips" HorizontalAlignment="Left" Margin="18,272,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>

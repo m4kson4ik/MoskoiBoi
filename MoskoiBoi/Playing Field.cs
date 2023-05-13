@@ -20,7 +20,7 @@ namespace MoskoiBoi
     interface IPlaying
     {
         public void GameDave(Grid grid);
-        public void CreateShips(Grid grid, System.Windows.Point pt);
+        public void CreateShips(Grid grid, System.Windows.Point pt, int ships);
         public bool GuningPlayer(Grid grid, System.Windows.Point pt);
         public void Guning(Grid grid);
         public void OtrisovkaShipsPlayer(Grid grid);
@@ -41,7 +41,6 @@ namespace MoskoiBoi
         public static int[,] arrayBot = new int[10, 10];
         public static int[,] arrayHisortBot = new int[10, 10];
         public static int[,] arrayHisortPlayer = new int[10, 10];
-
         public Playing_Field()
         {
         }
@@ -166,19 +165,28 @@ namespace MoskoiBoi
 
         public void OtrisovkaShipsBots(Grid grid)
         {
-            for (int i = 0; i < 10; i++)
+            Random random = new Random();
+            tp:
+            int j = 2;
+            int kolvo = 1;
+            for (int i = 0; i <= j;)
             {
-                for (int j = 0; j < 10; j++)
+                if (i < j)
                 {
-                    if (arrayBot[i, j] == 1)
+                    while (!CheckingShipsBot(random.Next(1, 8), random.Next(1, 8), kolvo, grid))
                     {
-                        int x_k = 0, y_k = 0;
-                        x_k = -360 + i * 80;
-                        y_k = -360 + j * 80;
-                        OtrisovkaKorabl(x_k, y_k, grid);
+                        
                     }
+                    i++;
+                }
+                else
+                {
+                    kolvo++;
+                    j--;
+                    i = 0;
                 }
             }
+
         }
 
         public void ClearShips(double x, double y, Grid grid)
@@ -248,7 +256,7 @@ namespace MoskoiBoi
                 return false;
             }
         }
-        public void CreateShips(Grid grid, System.Windows.Point pt) // Создание кораблей
+        public void CreateShips(Grid grid, System.Windows.Point pt, int ships) // Создание кораблей
         {
             int x = Convert.ToInt32(pt.X), y = Convert.ToInt32(pt.Y);
             int x_k = 0, y_k = 0;
@@ -258,16 +266,195 @@ namespace MoskoiBoi
             y_k = -360 + y * 80;
             if (array[x, y] != 1)
             {
-                game_zone(x, y, 1);
-                OtrisovkaKorabl(x_k, y_k, grid);
+                if (CheckingShips(x, y, ships, grid))
+                {
+                    game_zone(x, y, 1);
+                    //OtrisovkaKorabl(x_k, y_k, grid);
+                }
             }
             else
             {
                 ClearShips(x_k, y_k, grid);
                 game_zone(x, y, 0);
             }
-        }
 
+        }
+        public static int[] ships = new int[4]; 
+        private bool CheckingShips(int x, int y, int paluba, Grid grid)
+        {
+            try
+            {
+                switch (paluba)
+                {
+                    case 1:
+                        if (array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1 && ships[paluba] < 4)
+                        {
+                            ships[paluba]++;
+                            game_zone(x, y, 1);
+                            int x_k = -360 + x * 80;
+                            int y_k = -360 + y * 80;
+                            OtrisovkaKorabl(x_k, y_k, grid);
+                            return true;
+                        }
+                        break;
+                    case 2:
+                        if (array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1 && ships[paluba] < 3)
+                        {
+                            int x_k = -360 + x * 80;
+                            int y_k = -360 + y * 80;
+                            game_zone(x, y, 1);
+                            OtrisovkaKorabl(x_k, y_k, grid);
+                            if (array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1)
+                            {
+                                ships[paluba]++;
+                                y++;
+                                y_k = -360 + y * 80;
+                                game_zone(x, y, 1);
+                                OtrisovkaKorabl(x_k, y_k, grid);
+                                return true;
+                            }
+                        }
+                        break;
+                    case 3:
+                        bool isValid = false;
+                        if ((y == 9 && x == 9) || (y == 9 && x == 0))
+                        {
+                            MessageBox.Show(" ");
+                            return false;
+                        }
+
+                        if (x == 9)
+                        {
+                            // если горизонтально, то ошибка
+                            if (array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && ships[paluba] < 2)
+                            {
+                                isValid = true;
+                                int x_k = -360 + x * 80;
+                                int y_k = -360 + y * 80;
+                                game_zone(x, y, 1);
+                                OtrisovkaKorabl(x_k, y_k, grid);
+                                if (array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1)
+                                {
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    if (array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x - 1, y - 1] != 1)
+                                    {
+                                        ships[paluba]++;
+                                        y++;
+                                        y_k = -360 + y * 80;
+                                        game_zone(x, y, 1);
+                                        OtrisovkaKorabl(x_k, y_k, grid);
+                                    }
+                                }
+                            }
+                        }
+                        if (!isValid && (array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1 && array[x, y + 1] != 1 && ships[paluba] < 2))
+                        {
+                            int x_k = -360 + x * 80;
+                            int y_k = -360 + y * 80;
+                            game_zone(x, y, 1);
+                            OtrisovkaKorabl(x_k, y_k, grid);
+                            if (array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1)
+                            {
+                                y++;
+                                y_k = -360 + y * 80;
+                                game_zone(x, y, 1);
+                                OtrisovkaKorabl(x_k, y_k, grid);
+                                if (array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x - 1, y - 1] != 1 && array[x + 1, y - 1] != 1)
+                                {
+                                    ships[paluba]++;
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                }
+                            }
+                        }
+                        break;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message);
+                return false;
+            }
+        }
+        public static int[] shipsBot = new int[4];
+        private bool CheckingShipsBot(int x, int y, int paluba, Grid grid)
+        {
+            try
+            {
+                switch (paluba)
+                {
+                    case 1:
+                        if (arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1 && shipsBot[paluba] < 4)
+                        {
+                            shipsBot[paluba]++;
+                            game_zone_bot(x, y, 1);
+                            int x_k = -360 + x * 80;
+                            int y_k = -360 + y * 80;
+                            OtrisovkaKorabl(x_k, y_k, grid);
+                            //MessageBox.Show("OK");
+                            return true;
+                        }
+                        break;
+                    case 2:
+                        if (arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1 && shipsBot[paluba] < 3)
+                        {
+                            int x_k = -360 + x * 80;
+                            int y_k = -360 + y * 80;
+                            game_zone_bot(x, y, 1);
+                            OtrisovkaKorabl(x_k, y_k, grid);
+                            if (arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1)
+                            {
+                                shipsBot[paluba]++;
+                                y++;
+                                y_k = -360 + y * 80;
+                                game_zone_bot(x, y, 1);
+                                OtrisovkaKorabl(x_k, y_k, grid);
+                                return true;
+                            }
+                        }
+                        break;
+                    case 3:
+
+                        if (arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x, y + 1] != 1 && shipsBot[paluba] < 2)
+                        {
+                            int x_k = -360 + x * 80;
+                            int y_k = -360 + y * 80;
+                            game_zone_bot(x, y, 1);
+                            OtrisovkaKorabl(x_k, y_k, grid);
+                            if (arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1)
+                            {
+                                y++;
+                                y_k = -360 + y * 80;
+                                game_zone_bot(x, y, 1);
+                                OtrisovkaKorabl(x_k, y_k, grid);
+                                if (arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x + 1, y - 1] != 1)
+                                {
+                                    shipsBot[paluba]++;
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone_bot(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                }
+                            }
+                        }
+                        break;
+                    default:
+                        return false;
+                }
+                return false;
+            }
+            catch(Exception e)
+            {
+                //MessageBox.Show(e.Message);
+                return false;
+            }
+        }
 
 
         // Генерация кораблей для компьютера
@@ -277,48 +464,91 @@ namespace MoskoiBoi
         //  четырехпалуб = 1
         public void GenerationOfShips()
         {
-            MessageBox.Show("Генерация корабликов");
-            Random random = new Random();
-            //Однопалубные = 4
-            for (int i = 0; i < 4; i++)
-            {
-                int rand, rand2;
-                rand = random.Next(0, 10);
-                rand2 = random.Next(0, 10);
-                if (check_massiv_bot(rand, rand2))
-                {
-                    game_zone_bot(rand, rand2, 1);
-                }
-            }
-            //двухпалуб = 3
-            for (int i = 0; i < 3; i++)
-            {
-                int rand, rand2;
-                int ranoms = random.Next(1, 4);
-                rand = random.Next(0, 10);
-                rand2 = random.Next(rand, 10);
-                for (int j = 0; j < 2; j++)
-                {
-                    if (check_massiv_bot(rand, rand2))
-                    {
-                        game_zone_bot(rand, rand2, 1);
-                    }
-                    if (ranoms == 1)
-                    {
-                        rand2++;
-                    }
-                    else if (ranoms == 2)
-                    {
-                        rand2 = rand2 - 2;
-                    }
-                    else if (ranoms == 3)
-                    {
-
-                    }
-                }
-            }
+         //   MessageBox.Show("Генерация корабликов");
+         //   Random random = new Random();
+         //   //Однопалубные = 4
+         //   for (int i = 0; i < 4; i++)
+         //   {
+         //       int rand, rand2;
+         //       rand = random.Next(0, 10);
+         //       rand2 = random.Next(0, 10);
+         //       if (check_massiv_bot(rand, rand2))
+         //       {
+         //           game_zone_bot(rand, rand2, 1);
+         //       }
+         //   }
+         //   //двухпалуб = 3
+         //   for (int i = 0; i < 3; i++)
+         //   {
+         //       int rand, rand2;
+         //       int ranoms = random.Next(1, 4);
+         //       rand = random.Next(0, 10);
+         //       rand2 = random.Next(rand, 10);
+         //       for (int j = 0; j < 2; j++)
+         //       {
+         //           if (check_massiv_bot(rand, rand2))
+         //           {
+         //               game_zone_bot(rand, rand2, 1);
+         //           }
+         //           if (ranoms == 1)
+         //           {
+         //               rand2++;
+         //           }
+         //           else if (ranoms == 2)
+         //           {
+         //               rand2 = rand2 - 2;
+         //           }
+         //           else if (ranoms == 3)
+         //           {
+         //
+         //           }
+         //       }
+         //   }
         }
+        public int prov(int x, int y, int b, int vert)
+        {
+            int otv = 0;
+            if (vert == 0)
+            {
+                switch (b)
 
+                {
+
+                    case 1: if (array[x, y] != 0) otv = 1; break;
+
+                    case 2: if (array[x, y] != 0 || array[x + 1, y] != 0) otv = 1; break;
+
+                    case 3: if (array[x, y] != 0 || array[x + 1, y] != 0 || array[x + 2, y] != 0) otv = 1; break;
+
+                    case 4: if (array[x, y] != 0 || array[x + 1, y] != 0 || array[x + 2, y] != 0 || array[x + 3, y] != 0) otv = 1; break;
+
+                    default: otv = 0; break;
+
+                }
+
+            }
+
+            else
+
+            {
+
+                switch (b)
+
+                {
+
+                    case 1: if (array[x, y] != 0) otv = 1; break;
+
+                    case 2: if (array[x, y] != 0 || array[x, y + 1] != 0) otv = 1; break;
+
+                    case 3: if (array[x, y] != 0 || array[x, y + 1] != 0 || array[x, y + 2] != 0) otv = 1; break;
+
+                    case 4: if (array[x, y] != 0 || array[x, y + 1] != 0 || array[x, y + 2] != 0 || array[x, y + 3] != 0) otv = 1; break;
+
+                    default: otv = 0; break;
+                }
+            }
+            return otv;
+        }
         public void CorrectnesShips()
         {
 
@@ -386,12 +616,9 @@ namespace MoskoiBoi
 
         }
 
-
         public bool CheckInPeresechenie(Grid grid, System.Windows.Point pt)
         {
-
             int x = Convert.ToInt32(pt.X), y = Convert.ToInt32(pt.Y);
-
             int x_k = 0, y_k = 0;
             x = (x - (int)grid.Margin.Left) / 40;
             y = (y - (int)grid.Margin.Top) / 40;

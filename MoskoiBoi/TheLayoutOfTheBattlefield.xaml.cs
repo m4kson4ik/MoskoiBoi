@@ -37,6 +37,7 @@ namespace MoskoiBoi
 
         private void btGo_Click(object sender, RoutedEventArgs e)
         {
+
             Game game = new Game();
             game.Show();
         }
@@ -44,7 +45,27 @@ namespace MoskoiBoi
         private void gridShips_MouseUp(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Point pt = e.GetPosition(this);
-            Playing_Field.Context().CreateShips(gridShips, pt);
+            Playing_Field.Context().CreateShips(gridShips, pt, Convert.ToInt32(tbShips.Text));
+        }
+
+        private void lbOneShips_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            tbShips.Text = lbOneShips.Content.ToString();
+        }
+
+        private void lbFourShips_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            tbShips.Text = lbFourShips.Content.ToString();
+        }
+
+        private void lbTwoShips_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            tbShips.Text = lbTwoShips.Content.ToString();
+        }
+
+        private void lbThreeShips_MouseUp_1(object sender, MouseButtonEventArgs e)
+        {
+            tbShips.Text = lbThreeShips.Content.ToString();
         }
     }
 }
