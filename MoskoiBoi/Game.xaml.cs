@@ -29,6 +29,7 @@ namespace MoskoiBoi
             Playing_Field.Context().OtrisovkaShipsBots(Gridsopernik);
             Playing_Field.Context().GameDave(GridPole);
             Playing_Field.Context().GameDave(Gridsopernik);
+            GridPole.IsEnabled = false;
         }
         public int koloc;
         private void GridPole_MouseUp(object sender, MouseButtonEventArgs e)

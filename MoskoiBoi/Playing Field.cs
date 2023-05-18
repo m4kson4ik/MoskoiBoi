@@ -199,6 +199,21 @@ namespace MoskoiBoi
             return true;
         }
 
+        private bool CheckingWinBoot()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    if (array[i, j] == 1)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
 
         private int game_zone(int x, int y, int a) // Заполнение массива при выборе кораблей
         {
@@ -234,28 +249,16 @@ namespace MoskoiBoi
               y = (y - (int)grid.Margin.Top) / 40;
               x_k = -360 + x * 80;
               y_k = -360 + y * 80;
-             
+
               if (arrayBot[x, y] == 1)
               {
                 arrayBot[x, y] = 2;
-                  OtrisovkaPopal(x_k, y_k, grid);
-                if (arrayBot[x, y + 1] == 1 || arrayBot[x+1,y] == 1 || arrayBot[x-1,y] == 1 || arrayBot[x, y -1] == 1)
-                {
-                    MessageBox.Show("Корабль не убит, вы просто попали по нему!");
-                }
-                else
-                {
-                    MessageBox.Show("Убит!");
+                OtrisovkaPopal(x_k, y_k, grid);
                     if (CheckingWinPlayer())
                     {
                         MessageBox.Show("WIN");
+                        grid.IsEnabled = false;
                     }
-                }
-
-                if (arrayBot[x, y+1] == 2 || arrayBot[x+1,y] == 2 || arrayBot[x-1,y] == 2 || arrayBot[x,y-1] == 2 && arrayBot[x+1,y] !=1 && arrayBot[x-1,y]!=1 && arrayBot[x,y+1]!=1 && arrayBot[x,y-1]!=1)
-                {
-                    //MessageBox.Show("Убил!");
-                }
                 return true;
               }
               else
@@ -275,7 +278,7 @@ namespace MoskoiBoi
             y_k = -360 + y * 80;
             if (array[x, y] != 1)
             {
-                if (CheckingShips(x, y, ships, gorizontal, grid))
+                if (CheckingShips(x, y, ships, gorizontal, grid, array))
                 {
                     game_zone(x, y, 1);
                     //OtrisovkaKorabl(x_k, y_k, grid);
@@ -289,53 +292,52 @@ namespace MoskoiBoi
 
         }
         public static int[] ships = new int[5]; 
-        private bool CheckingShips(int x, int y, int paluba, bool isGorizontal, Grid grid)
+        private bool CheckingShips(int x, int y, int paluba, bool isGorizontal, Grid grid, int[,] ArrayPlayer)
         {
             try
-            {
-                MessageBox.Show("x = " + x.ToString() + " y = " + y.ToString());
+            {               
                 switch (paluba)
                 {
                     case 1:
                         if (ships[paluba] < 4)
                         {
                             bool isValid = false;
-                            if (!isValid && x == 9 && y == 9 && array[x, y] != 1 && array[x - 1, y] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1)
+                            if (!isValid && x == 9 && y == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                             {
                                 isValid = true;
                             }
-                            if (!isValid && x == 0 && y == 9 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y - 1] != 1 && array[x, y - 1] != 1)
+                            if (!isValid && x == 0 && y == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                             {
                                 isValid = true;
                             }
-                            if (!isValid && y == 0 && x == 0 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1)
+                            if (!isValid && y == 0 && x == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1)
                             {
                                 isValid = true;
                             }
-                            if (!isValid && y == 0 && x == 9 && array[x, y] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 &&
-                                array[x - 1, y + 1] != 1)
+                            if (!isValid && y == 0 && x == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 &&
+                                ArrayPlayer[x - 1, y + 1] != 1)
                             {
                                 isValid = true;
                             }
-                            if (!isValid && y == 9 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x - 1, y] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1)
+                            if (!isValid && y == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                             {
                                 isValid = true;
                             }
-                            if (!isValid && x == 9 && array[x, y] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1)
+                            if (!isValid && x == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                             {
                                 isValid = true;
                             }
-                            if (!isValid && x == 0 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x + 1, y - 1] != 1 && array[x, y - 1] != 1)
+                            if (!isValid && x == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                             {
                                 isValid = true;
                             }
 
-                            if (!isValid && y == 0 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 &&
-                                array[x - 1, y + 1] != 1)
+                            if (!isValid && y == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 &&
+                                ArrayPlayer[x - 1, y + 1] != 1)
                             {
                                 isValid = true;
                             }
-                            if (!isValid && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1)
+                            if (!isValid && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                             {
                                 isValid = true;
                             }
@@ -359,40 +361,40 @@ namespace MoskoiBoi
                             {
                                 if (x != 9)
                                 {
-                                    // Что то работает, но не совсем
-                                    if (!isValid && y == 9 && x == 0 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x, y - 1] != 1 && array[x + 2, y] != 1)
+                                    if (!isValid && y == 9 && x == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x + 2, y] != 1)
                                     {
                                         isValid = true;
 
                                     }
-                                    if (y == 0 && x == 0 && array[x + 1, y] != 1 && array[x + 2, y] != 1 && array[x + 1, y + 1] != 1)
+                                    if (y == 0 && x == 0 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1)
                                     {
                                         isValid = true;
 
                                     }
-                                    if (!isValid && y == 9 && array[x + 1, y] != 1 && array[x - 1, y] != 1 && array[x, y - 1] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1)
+                                    if (!isValid && y == 9 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1)
                                     {
                                         isValid = true;
 
                                     }
-                                    if (!isValid && y == 0 && x == 8 && array[x, y + 1] != 1 && array[x + 1, y + 1] != 1)
+                                    if (!isValid && y == 0 && x == 8 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1)
                                     {
                                         isValid = true;
                                     }
-                                    if (!isValid && x == 8 && array[x, y + 1] != 1 && array[x + 1, y] != 1 && array[x, y - 1] != 1)
+                                    if (!isValid && x == 8 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x, y - 1] != 1)
                                     {
                                         isValid = true;
 
                                     }
-                                    if (!isValid && y == 0 && array[x - 1, y] != 1 && array[x + 1, y] != 1 && array[x + 2, y] != 1 && array[x, y + 1] != 1)
+                                    if (!isValid && y == 0 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x, y + 1] != 1)
                                     {
                                         isValid = true;
                                     }
-                                    if (!isValid && x == 0 && array[x + 1, y] != 1 && array[x, y + 1] != 1 && array[x, y - 1] != 1)
+                                    if (!isValid && x == 0 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                                     {
                                         isValid = true;
                                     }
-                                    if (!isValid && array[x - 1, y] != 1 && array[x + 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x + 1, y + 1] != 1 && array[x, y - 1] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1 && array[x + 2, y] != 1 && array[x + 2, y + 1] != 1 && array[x + 2, y - 1] != 1)
+                                    if (!isValid && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 
+                                        && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && ArrayPlayer[x + 2, y - 1] != 1)
                                     {
                                         isValid = true;
                                     }
@@ -413,39 +415,48 @@ namespace MoskoiBoi
                         }
                         else
                         {
-                            if (y != 9)
+                            if (y != 9 && ships[paluba] != 3)
                             {
                                 bool isValid = false;
-                                if (!isValid && x == 9 && y == 0 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x, y + 2] != 1 && array[x - 1, y + 2] != 1)
+                                if (!isValid && y == 8 && x == 0 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && x == 0 && y == 0 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x, y + 2] != 1 && array[x + 1, y + 2] != 1)
+                                if (!isValid && y == 8 && x == 9 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && y == 0 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x, y + 2] != 1 && array[x + 1, y + 2] != 1 && array[x - 1, y + 2] != 1)
+                                if (!isValid && y == 8 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && x == 0 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x + 1, y - 1] != 1 && array[x, y - 1] != 1 && array[x, y + 2] != 1 && array[x + 1, y + 2] != 1)
+                                if (!isValid && x == 9 && y == 0 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && x == 9 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1 && array[x, y + 2] != 1 && array[x - 1, y + 2] != 1)
+                                if (!isValid && x == 0 && y == 0 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 0 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 0 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 9 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1)
                                 {
                                     isValid = true;
                                 }
 
-                                if (!isValid && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1 && array[x, y +2] !=1 && array[x+1,y+2] !=1 && array[x-1,y+2] !=1)
+                                if (!isValid && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x, y - 1] != 1
+                                    && ArrayPlayer[x, y +2] !=1 && ArrayPlayer[x+1,y+2] !=1 && ArrayPlayer[x-1,y+2] !=1 && ArrayPlayer[x,y+2] !=1)
                                 {
                                     isValid = true;
                                 }
 
-                                if (!isValid && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x, y + 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y - 1] != 1 && array[x - 1, y - 1] != 1 && array[x, y - 1] != 1)
-                                {
-                                    isValid = true;
-                                }
                                 if (isValid == true)
                                 {
                                     int x_k = -360 + x * 80;
@@ -464,52 +475,52 @@ namespace MoskoiBoi
                         #endregion
                         break;
                     case 3:
-                        if (isGorizontal && ships[paluba] != 2)
+                        if (isGorizontal)
                         {
                             bool isValid = false;
-                            if (x != 8 && x != 9)
+                            if (x != 8 && x != 9 && ships[paluba] != 2)
                             {
-                                if (!isValid && y == 0 && x == 0 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y + 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y + 1] != 1)
+                                if (!isValid && y == 0 && x == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y + 1] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && x == 7 && y == 9 && array[x, y] != 1 && array[x - 1, y] != 1 && array[x - 1, y - 1] != 1 && array[x + 1, y] != 1 && array[x + 1, y - 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1)
+                                if (!isValid && x == 7 && y == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && x == 0 && y == 9 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y - 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y - 1] != 1)
-                                if (!isValid && x == 7 && y == 0 && array[x, y] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y + 1] != 1)
+                                if (!isValid && x == 0 && y == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y - 1] != 1)
+                                if (!isValid && x == 7 && y == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y + 1] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && x== 7 && array[x, y] != 1 && array[x - 1, y] != 1 && array[x - 1, y - 1] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x + 1, y - 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1 && array[x + 2, y + 1] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x, y + 1] != 1)
+                                if (!isValid && x== 7 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x, y + 1] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && y == 0 && array[x, y] != 1 && array[x - 1, y] != 1 && array[x - 1, y + 1] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y + 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y + 1] != 1)
+                                if (!isValid && y == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y + 1] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && x == 0 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x + 1, y - 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1 && array[x + 2, y + 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y - 1] != 1 && array[x + 3, y + 1] != 1)
+                                if (!isValid && x == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y - 1] != 1 && ArrayPlayer[x + 3, y + 1] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && y == 9 && array[x, y] != 1 && array[x - 1, y] != 1 && array[x - 1, y - 1] != 1 && array[x + 1, y] != 1 && array[x + 1, y - 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y - 1] != 1)
+                                if (!isValid && y == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y - 1] != 1)
                                 {
                                     isValid = true;
                                 }
 
                                 
-                                if (!isValid && array[x,y] !=1 && array[x-1,y] !=1 && array[x-1,y-1] !=1 && array[x-1,y+1] !=1 && array[x+1,y] !=1 && array[x+1,y+1] !=1 && array[x+1,y-1] !=1 &&
-                                    array[x+2,y] !=1 && array[x+2,y-1] !=1 && array[x+2,y+1] !=1 && array[x+3,y] !=1 && array[x+3,y-1] !=1 && array[x+3,y+1] !=1 && array[x, y-1] != 1 && array[x,y+1] != 1)
+                                if (!isValid && ArrayPlayer[x,y] !=1 && ArrayPlayer[x-1,y] !=1 && ArrayPlayer[x-1,y-1] !=1 && ArrayPlayer[x-1,y+1] !=1 && ArrayPlayer[x+1,y] !=1 && ArrayPlayer[x+1,y+1] !=1 && ArrayPlayer[x+1,y-1] !=1 &&
+                                    ArrayPlayer[x+2,y] !=1 && ArrayPlayer[x+2,y-1] !=1 && ArrayPlayer[x+2,y+1] !=1 && ArrayPlayer[x+3,y] !=1 && ArrayPlayer[x+3,y-1] !=1 && ArrayPlayer[x+3,y+1] !=1 && ArrayPlayer[x, y-1] != 1 && ArrayPlayer[x,y+1] != 1)
                                 {
                                     isValid = true;
                                 }
@@ -531,63 +542,141 @@ namespace MoskoiBoi
                                 }
                             }
                         }
-                        break;
-                    case 4:
-                        if (ships[paluba] != 1 && isGorizontal)
+                        else
                         {
-                            bool isValid = false;
-                            if (x != 7 && x != 8 && x != 9)
+                            if (y != 9 && y != 8 && ships[paluba] != 2)
                             {
-                                if (!isValid && y == 0 && x==0 && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y + 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y + 1] != 1 && array[x + 4, y] != 1 && array[x + 4, y + 1] != 1)
+                                bool isValid = false;
+                                if (!isValid && x == 0 && y == 7 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && y == 0 && x == 6 && array[x, y] != 1 && array[x - 1, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y + 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y + 1] != 1)
+                                if (!isValid && x == 9 && y == 7  && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 &&
+                                     ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && y == 9 && x == 6 && array[x, y] != 1 && array[x, y - 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y - 1] != 1 && array[x + 1, y] != 1 && array[x + 1, y - 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y - 1] != 1)
+                                if (!isValid && y == 0 && x == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x - 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 0 && y == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 &&
+                                    ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x + 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x - 1, y] != 1 &&
+                                    ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x + 1, y + 3] != 1 && ArrayPlayer[x - 1, y + 3] != 1)
                                 {
                                     isValid = true;
                                 }
                                 
-                                if (!isValid && x == 6 && array[x, y] != 1 && array[x, y - 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y - 1] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 && array[x + 1, y - 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1 && array[x + 2, y + 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y + 1] != 1 && array[x + 3, y - 1] != 1)
+                                
+                                if (!isValid && x == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x, y - 1] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x, y + 3] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && y == 9 && x == 0 && array[x, y] != 1 && array[x, y - 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y - 1] != 1 && array[x + 4, y] != 1 &&
-                                    array[x + 4, y - 1] != 1)
+
+                                if (!isValid && x == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x + 1, y + 3] != 1)
                                 {
                                     isValid = true;
                                 }
-                                if (!isValid && x == 0 && !isValid && array[x, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1 && array[x + 2, y + 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y + 1] != 1 && array[x + 3, y - 1] != 1 && array[x + 4, y] != 1 &&
-                                    array[x + 4, y - 1] != 1 && array[x + 4, y + 1] != 1)
+
+                                if (!isValid && y == 7 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (!isValid && ArrayPlayer[x,y] != 1 && ArrayPlayer[x+1,y] !=1 && ArrayPlayer[x-1,y] !=1 && ArrayPlayer[x,y-1] !=1 && ArrayPlayer[x+1,y-1] != 1 && ArrayPlayer[x-1,y-1]!=1 &&
+                                    ArrayPlayer[x+1,y+1]!=1 && ArrayPlayer[x,y+1]!=1 && ArrayPlayer[x-1,y+1]!=1 && ArrayPlayer[x,y+2]!=1 && ArrayPlayer[x+1,y+2]!=1 && ArrayPlayer[x-1,y+2]!=1 &&
+                                    ArrayPlayer[x,y+3]!=1 && ArrayPlayer[x+1,y+3]!=1 && ArrayPlayer[x-1,y+3] !=1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (isValid == true)
+                                {
+                                    int x_k = -360 + x * 80;
+                                    int y_k = -360 + y * 80;
+                                    game_zone(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    ships[paluba]++;
+                                }
+                            }
+                        }
+                        break;
+                    case 4:
+                        if (isGorizontal)
+                        {
+                            bool isValid = false;
+                            if (x != 7 && x != 8 && x != 9 && ships[paluba] != 1)
+                            {
+                                if (!isValid && y == 0 && x==0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y + 1] != 1 && ArrayPlayer[x + 4, y] != 1 && ArrayPlayer[x + 4, y + 1] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 0 && x == 6 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y + 1] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 9 && x == 6 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y - 1] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                
+                                if (!isValid && x == 6 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y + 1] != 1 && ArrayPlayer[x + 3, y - 1] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 9 && x == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x, y - 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y - 1] != 1 && ArrayPlayer[x + 4, y] != 1 &&
+                                    ArrayPlayer[x + 4, y - 1] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 0 && !isValid && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y + 1] != 1 && ArrayPlayer[x + 3, y - 1] != 1 && ArrayPlayer[x + 4, y] != 1 &&
+                                    ArrayPlayer[x + 4, y - 1] != 1 && ArrayPlayer[x + 4, y + 1] != 1)
                                 {
                                     isValid = true;
                                 }     
                                 
-                                if (!isValid && y == 9 && array[x, y] != 1 && array[x, y - 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y - 1] != 1 && array[x + 1, y] != 1 && array[x + 1, y - 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y - 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y - 1] != 1 && array[x + 4, y] != 1 &&
-                                    array[x + 4, y - 1] != 1)
+                                if (!isValid && y == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y - 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y - 1] != 1 && ArrayPlayer[x + 4, y] != 1 &&
+                                    ArrayPlayer[x + 4, y - 1] != 1)
                                 {
                                     isValid = true;
                                 }
 
-                                if (!isValid && y == 0 && array[x, y] != 1 && array[x - 1, y] != 1 && array[x + 1, y] != 1 && array[x + 1, y + 1] != 1 &&
-                                    array[x + 2, y] != 1 && array[x + 2, y + 1] != 1 && array[x + 3, y] != 1 && array[x + 3, y + 1] != 1 && array[x + 4, y] != 1 && array[x + 4, y + 1] != 1)
+                                if (!isValid && y == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x + 1, y + 1] != 1 &&
+                                    ArrayPlayer[x + 2, y] != 1 && ArrayPlayer[x + 2, y + 1] != 1 && ArrayPlayer[x + 3, y] != 1 && ArrayPlayer[x + 3, y + 1] != 1 && ArrayPlayer[x + 4, y] != 1 && ArrayPlayer[x + 4, y + 1] != 1)
                                 {
                                     isValid = true;
                                 }
 
-                                if (!isValid && array[x, y] != 1 && array[x, y - 1] != 1 && array[x - 1, y] != 1 && array[x - 1, y - 1] != 1 && array[x + 1, y] != 1 && array[x+1, y +1] != 1 && array[x+1, y -1] != 1 &&
-                                    array[x+2,y] !=1 && array[x+2, y -1] !=1 && array[x+2, y+1] != 1 && array[x+3,y] !=1 && array[x+3,y+1] !=1 && array[x+3,y-1] !=1 && array[x+4,y] !=1 &&
-                                    array[x+4, y-1] !=1 && array[x+4,y+1] !=1)
+                                if (!isValid && ArrayPlayer[x, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x - 1, y - 1] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x+1, y +1] != 1 && ArrayPlayer[x+1, y -1] != 1 &&
+                                    ArrayPlayer[x+2,y] !=1 && ArrayPlayer[x+2, y -1] !=1 && ArrayPlayer[x+2, y+1] != 1 && ArrayPlayer[x+3,y] !=1 && ArrayPlayer[x+3,y+1] !=1 && ArrayPlayer[x+3,y-1] !=1 && ArrayPlayer[x+4,y] !=1 &&
+                                    ArrayPlayer[x+4, y-1] !=1 && ArrayPlayer[x+4,y+1] !=1)
                                 {
                                     isValid = true;
                                 }
@@ -615,17 +704,104 @@ namespace MoskoiBoi
                                 }
                             }    
                         }
+                        else
+                        {
+                            if (y != 9 && y != 8 && y != 7 && ships[paluba] != 1)
+                            {
+                                bool isValid = false;
+                                if (!isValid && y == 0 && x == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x + 1, y + 3] != 1 && ArrayPlayer[x, y + 4] != 1 && ArrayPlayer[x + 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                } 
+                                if (!isValid && x == 9 && y == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x - 1, y + 3] != 1 && ArrayPlayer[x, y + 4] != 1 && ArrayPlayer[x - 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 9 && y == 6 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x - 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                } 
+
+                                if (!isValid && x == 0 && y == 6 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x + 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (!isValid && y == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x - 1, y] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x + 1, y + 3] != 1 && ArrayPlayer[x - 1, y + 3] != 1 && ArrayPlayer[x, y + 4] != 1 && ArrayPlayer[x + 1, y + 4] != 1 && ArrayPlayer[x - 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (!isValid && x == 0 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x + 1, y + 3] != 1 && ArrayPlayer[x, y + 4] != 1 && ArrayPlayer[x + 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 9 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1  && ArrayPlayer[x - 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x - 1, y + 3] != 1 && ArrayPlayer[x, y + 4] != 1 && ArrayPlayer[x - 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 6 && ArrayPlayer[x, y] != 1 && ArrayPlayer[x + 1, y] != 1 && ArrayPlayer[x - 1, y] != 1 && ArrayPlayer[x, y - 1] != 1 && ArrayPlayer[x + 1, y - 1] != 1 && ArrayPlayer[x - 1, y - 1] != 1 &&
+                                    ArrayPlayer[x, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x - 1, y + 1] != 1 && ArrayPlayer[x + 1, y + 1] != 1 && ArrayPlayer[x, y + 2] != 1 && ArrayPlayer[x + 1, y + 2] != 1 && ArrayPlayer[x - 1, y + 2] != 1 &&
+                                    ArrayPlayer[x, y + 3] != 1 && ArrayPlayer[x + 1, y + 3] != 1 && ArrayPlayer[x - 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+
+                                if (!isValid && ArrayPlayer[x,y]!=1 && ArrayPlayer[x+1,y] != 1 && ArrayPlayer[x-1,y] != 1 && ArrayPlayer[x,y-1]!=1 && ArrayPlayer[x+1,y-1]!=1 && ArrayPlayer[x-1,y-1]!=1 &&
+                                    ArrayPlayer[x,y+1]!=1 && ArrayPlayer[x+1,y+1]!=1 && ArrayPlayer[x-1,y+1]!=1 && ArrayPlayer[x+1,y+1]!=1 && ArrayPlayer[x,y+2]!=1 && ArrayPlayer[x+1,y+2]!=1 && ArrayPlayer[x-1,y+2]!=1&&
+                                    ArrayPlayer[x,y+3]!=1 && ArrayPlayer[x+1,y+3]!=1 && ArrayPlayer[x-1,y+3]!=1 && ArrayPlayer[x,y+4]!=1 && ArrayPlayer[x+1,y+4]!=1 && ArrayPlayer[x-1,y+4]!=1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (isValid == true)
+                                {
+                                    int x_k = -360 + x * 80;
+                                    int y_k = -360 + y * 80;
+                                    game_zone(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    ships[paluba]++;
+                                }
+                            }
+                        }
                         break;
                 }
                 return false;
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
                 return false;
             }
         }
-        public static int[] shipsBot = new int[4];
+        public static int[] shipsBot = new int[5];
         private bool CheckingShipsBot(int x, int y, int paluba, bool isGorizontal, Grid grid)
         {
             try
@@ -752,9 +928,21 @@ namespace MoskoiBoi
                         }
                         else
                         {
-                            if (y != 9)
+                            if (y != 9 && shipsBot[paluba] != 3)
                             {
                                 bool isValid = false;
+                                if (!isValid && y == 8 && x == 0 && arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x, y - 1] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 8 && x == 9 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 8 && arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1)
+                                {
+                                    isValid = true;
+                                }
                                 if (!isValid && x == 9 && y == 0 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1)
                                 {
                                     isValid = true;
@@ -776,12 +964,8 @@ namespace MoskoiBoi
                                     isValid = true;
                                 }
 
-                                if (!isValid && arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1)
-                                {
-                                    isValid = true;
-                                }
-
-                                if (!isValid && arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1)
+                                if (!isValid && arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 && arrayBot[x, y - 1] != 1
+                                    && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 && arrayBot[x, y + 2] != 1)
                                 {
                                     isValid = true;
                                 }
@@ -799,8 +983,7 @@ namespace MoskoiBoi
                                     return true;
                                 }
                             }
-
-                        }
+                            }
                         #endregion
                         break;
                     case 3:
@@ -872,12 +1055,91 @@ namespace MoskoiBoi
                                 }
                             }
                         }
+                        else
+                        {
+                            if (y != 9 && y != 8 && shipsBot[paluba]!=2)
+                            {
+                                bool isValid = false;
+                                if (!isValid && x == 0 && y == 7 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 9 && y == 7 && arrayBot[x, y] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 &&
+                                     arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 0 && x == 9 && arrayBot[x, y] != 1 && arrayBot[x - 1, y] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x - 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 0 && y == 0 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 &&
+                                    arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 0 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x - 1, y] != 1 &&
+                                    arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1 && arrayBot[x - 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+
+                                if (!isValid && x == 9 && arrayBot[x, y] != 1 && arrayBot[x, y - 1] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (!isValid && x == 0 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x + 1, y - 1] != 1 &&
+                                    arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (!isValid && y == 7 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 &&
+                                    arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (!isValid && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 &&
+                                    arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1 && arrayBot[x - 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (isValid == true)
+                                {
+                                    int x_k = -360 + x * 80;
+                                    int y_k = -360 + y * 80;
+                                    game_zone_bot(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone_bot(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone_bot(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    shipsBot[paluba]++;
+                                    return true;
+                                }
+                            }
+                        }
                         break;
                     case 4:
-                        if (shipsBot[paluba] != 1 && isGorizontal)
+                        if (isGorizontal)
                         {
                             bool isValid = false;
-                            if (x != 7 && x != 8 && x != 9)
+                            if (x != 7 && x != 8 && x != 9 && shipsBot[paluba] != 1)
                             {
                                 if (!isValid && y == 0 && x == 0 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x + 1, y + 1] != 1 &&
                                     arrayBot[x + 2, y] != 1 && arrayBot[x + 2, y + 1] != 1 && arrayBot[x + 3, y] != 1 && arrayBot[x + 3, y + 1] != 1 && arrayBot[x + 4, y] != 1 && arrayBot[x + 4, y + 1] != 1)
@@ -957,30 +1219,119 @@ namespace MoskoiBoi
                                 }
                             }
                         }
+                        else
+                        {
+                            if (y != 9 && y != 8 && y != 7 && shipsBot[paluba] !=1)
+                            {
+                                bool isValid = false;
+                                if (!isValid && y == 0 && x == 0 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1 && arrayBot[x, y + 4] != 1 && arrayBot[x + 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 9 && y == 0 && arrayBot[x, y] != 1 && arrayBot[x - 1, y] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x - 1, y + 3] != 1 && arrayBot[x, y + 4] != 1 && arrayBot[x - 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 9 && y == 6 && arrayBot[x, y] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x - 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (!isValid && x == 0 && y == 6 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x + 1, y - 1] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (!isValid && y == 0 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x - 1, y] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1 && arrayBot[x - 1, y + 3] != 1 && arrayBot[x, y + 4] != 1 && arrayBot[x + 1, y + 4] != 1 && arrayBot[x - 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (!isValid && x == 0 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x + 1, y - 1] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1 && arrayBot[x, y + 4] != 1 && arrayBot[x + 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && x == 9 && arrayBot[x, y] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x - 1, y + 3] != 1 && arrayBot[x, y + 4] != 1 && arrayBot[x - 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+                                if (!isValid && y == 6 && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1 && arrayBot[x - 1, y + 3] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+
+                                if (!isValid && arrayBot[x, y] != 1 && arrayBot[x + 1, y] != 1 && arrayBot[x - 1, y] != 1 && arrayBot[x, y - 1] != 1 && arrayBot[x + 1, y - 1] != 1 && arrayBot[x - 1, y - 1] != 1 &&
+                                    arrayBot[x, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x - 1, y + 1] != 1 && arrayBot[x + 1, y + 1] != 1 && arrayBot[x, y + 2] != 1 && arrayBot[x + 1, y + 2] != 1 && arrayBot[x - 1, y + 2] != 1 &&
+                                    arrayBot[x, y + 3] != 1 && arrayBot[x + 1, y + 3] != 1 && arrayBot[x - 1, y + 3] != 1 && arrayBot[x, y + 4] != 1 && arrayBot[x + 1, y + 4] != 1 && arrayBot[x - 1, y + 4] != 1)
+                                {
+                                    isValid = true;
+                                }
+
+                                if (isValid == true)
+                                {
+                                    int x_k = -360 + x * 80;
+                                    int y_k = -360 + y * 80;
+                                    game_zone_bot(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone_bot(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone_bot(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    y++;
+                                    y_k = -360 + y * 80;
+                                    game_zone_bot(x, y, 1);
+                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    shipsBot[paluba]++;
+                                    return true;
+                                }
+                            }
+                        }
                         break;
                 }
                 return false;
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                //MessageBox.Show(e.Message);
                 return false;
             }
         }
         public void OtrisovkaShipsBots(Grid grid) // Отрисовка кораблей бота
         {
             Random random = new Random();
+            MessageBox.Show(Convert.ToBoolean(random.Next(0,1)).ToString());
             int j = 4;
             int kolvo = 1;
             for (int i = 0; i <= j;)
             {
-                if (j == 1)
+                if (j == 0)
                 {
                     return;
                 }
                 if (i < j)
                 {
-                    while (!CheckingShipsBot(random.Next(0, 9), random.Next(0, 9), kolvo, true, grid))
+                    while (!CheckingShipsBot(random.Next(0, 9), random.Next(0, 9), kolvo, Convert.ToBoolean(random.Next(0, 2)), grid))
                     {
 
                     }
@@ -1154,7 +1505,6 @@ namespace MoskoiBoi
                     if (array[x, y] == 1)
                     {
                         OtrisovkaPopal(x_k, y_k, grid);
-                        MessageBox.Show("Компьютер попал! Он ходит еще раз!");
                         arrayHisortBot[x, y] = 1;
                         array[x, y] = 2;                       
                         if (array[x, y + 1] == 1 || array[x + 1, y] == 1 || array[x - 1, y] == 1 || array[x, y - 1] == 1)
@@ -1167,14 +1517,20 @@ namespace MoskoiBoi
                         }
                         else
                         {
-                            MessageBox.Show("Убит!");
+                           // MessageBox.Show("Убит!");
                         }
 
                         if (array[x, y + 1] == 2 || array[x + 1, y] == 2 || array[x - 1, y] == 2 || array[x, y - 1] == 2 && array[x + 1, y] != 1 && array[x - 1, y] != 1 && array[x, y + 1] != 1 && array[x, y - 1] != 1)
                         {
                             //MessageBox.Show("Убил!");
                         }
+                        Thread.Sleep(500);
                         Guning(grid);
+                        Thread.Sleep(500);
+                        if (CheckingWinBoot())
+                        {
+                            MessageBox.Show("Победил бот!");
+                        }
                         //arrayHisortBot[x, y] = 2;
                     }
                     else
@@ -1199,7 +1555,7 @@ namespace MoskoiBoi
         // Хранение информации о ходах
         public void StoringInformationAboutMoves(int x, int y)
         {
-            //  array[]
+            //  ArrayPlayer[]
         }
 
         // Проверка количества кораблей
@@ -1207,7 +1563,7 @@ namespace MoskoiBoi
         {
 
         }
-
+        public static int[,] historyGuningPlayer = new int[10, 10];
         public bool CheckInPeresechenie(Grid grid, System.Windows.Point pt)
         {
             int x = Convert.ToInt32(pt.X), y = Convert.ToInt32(pt.Y);
@@ -1217,11 +1573,11 @@ namespace MoskoiBoi
             x_k = -360 + x * 80;
             y_k = -360 + y * 80;
 
-            if (arrayHisortBot[x, y] == 0)
+            if (historyGuningPlayer[x, y] == 0)
             {
                 if (arrayBot[x, y] == 0)
                 {
-                    arrayHisortBot[x, y] = 2;
+                    historyGuningPlayer[x, y] = 2;
                     return true;
                 }
                 else
