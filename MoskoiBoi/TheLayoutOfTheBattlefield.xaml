@@ -8,12 +8,12 @@
         Title="TheLayoutOfTheBattlefield" Height="450" Width="800">
     <Grid>
         <Grid x:Name="gridShips" HorizontalAlignment="Left" Height="400" Margin="163,0,0,0" VerticalAlignment="Center" Width="400" Background="Gray" MouseUp="gridShips_MouseUp"/>
-        <Label x:Name="lbOneShips" Content="4" HorizontalAlignment="Left" Margin="10,56,0,0" VerticalAlignment="Top" Cursor="Hand" MouseUp="lbOneShips_MouseUp"/>
-        <Label x:Name="lbThreeShips" Content="3" HorizontalAlignment="Left" Margin="10,98,0,0" VerticalAlignment="Top" MouseUp="lbThreeShips_MouseUp_1"/>
-        <Label x:Name="lbTwoShips" Content="2" HorizontalAlignment="Left" Margin="10,139,0,0" VerticalAlignment="Top" MouseUp="lbTwoShips_MouseUp"/>
-        <Label x:Name="lbFourShips" Content="1" HorizontalAlignment="Left" Margin="10,178,0,0" VerticalAlignment="Top" Cursor="Hand" MouseUp="lbFourShips_MouseUp"/>
         <Button x:Name="btGo" Content="Button" HorizontalAlignment="Left" Height="51" Margin="639,366,0,0" VerticalAlignment="Top" Width="151" Click="btGo_Click"/>
-        <CheckBox Content="Горизонталь" HorizontalAlignment="Left" Margin="18,0,0,0" VerticalAlignment="Center"/>
+        <CheckBox x:Name="isGorizontal" Content="Горизонталь" HorizontalAlignment="Left" Margin="18,252,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="tbShips" HorizontalAlignment="Left" Margin="18,272,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+        <Image x:Name="OneShips" HorizontalAlignment="Left" Height="26" Margin="10,180,0,0" VerticalAlignment="Top" Width="45" Source="/Group 1.png" MouseUp="OneShips_MouseUp" Cursor="Hand"/>
+        <Image x:Name="TwoShips" HorizontalAlignment="Left" Height="24" Margin="10,151,0,0" VerticalAlignment="Top" Width="56" Source="/Group 2.png" MouseUp="TwoShips_MouseUp" Cursor="Hand"/>
+        <Image x:Name="ThreeShips" HorizontalAlignment="Left" Height="31" Margin="10,118,0,0" VerticalAlignment="Top" Width="69" Source="/Group 3.png" MouseUp="ThreeShips_MouseUp" Cursor="Hand"/>
+        <Image x:Name="FourShips" HorizontalAlignment="Left" Height="30" Margin="10,85,0,0" VerticalAlignment="Top" Width="93" Source="/Group 4.png" MouseUp="FourShips_MouseUp" Cursor="Hand"/>
     </Grid>
 </Window>

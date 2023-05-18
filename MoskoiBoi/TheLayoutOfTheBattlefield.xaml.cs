@@ -45,27 +45,26 @@ namespace MoskoiBoi
         private void gridShips_MouseUp(object sender, MouseButtonEventArgs e)
         {
             System.Windows.Point pt = e.GetPosition(this);
-            Playing_Field.Context().CreateShips(gridShips, pt, Convert.ToInt32(tbShips.Text));
+            Playing_Field.Context().CreateShips(gridShips, pt, isGorizontal.IsChecked ?? true, Convert.ToInt32(tbShips.Text));
+        }
+        private void OneShips_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            tbShips.Text = "1";
         }
 
-        private void lbOneShips_MouseUp(object sender, MouseButtonEventArgs e)
+        private void ThreeShips_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            tbShips.Text = lbOneShips.Content.ToString();
+            tbShips.Text = "3";
         }
 
-        private void lbFourShips_MouseUp(object sender, MouseButtonEventArgs e)
+        private void TwoShips_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            tbShips.Text = lbFourShips.Content.ToString();
+            tbShips.Text = "2";
         }
 
-        private void lbTwoShips_MouseUp(object sender, MouseButtonEventArgs e)
+        private void FourShips_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            tbShips.Text = lbTwoShips.Content.ToString();
-        }
-
-        private void lbThreeShips_MouseUp_1(object sender, MouseButtonEventArgs e)
-        {
-            tbShips.Text = lbThreeShips.Content.ToString();
+            tbShips.Text = "4";
         }
     }
 }
