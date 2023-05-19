@@ -249,24 +249,22 @@ namespace MoskoiBoi
               y = (y - (int)grid.Margin.Top) / 40;
               x_k = -360 + x * 80;
               y_k = -360 + y * 80;
-
-              if (arrayBot[x, y] == 1)
-              {
-                arrayBot[x, y] = 2;
-                OtrisovkaPopal(x_k, y_k, grid);
+                if (arrayBot[x, y] == 1)
+                {
+                    arrayBot[x, y] = 2;
+                    OtrisovkaPopal(x_k, y_k, grid);
                     if (CheckingWinPlayer())
                     {
                         MessageBox.Show("WIN");
                         grid.IsEnabled = false;
                     }
-                return true;
-              }
-              else
-              {
-                  OtrisovkaPromox(x_k, y_k, grid);
-                  return false;
-              }
-            
+                    return true;
+                }
+                else
+                {
+                    OtrisovkaPromox(x_k, y_k, grid);
+                    return false;
+                }
         }
         public void CreateShips(Grid grid, System.Windows.Point pt, bool gorizontal, int ships) // Создание кораблей
         {
@@ -857,7 +855,7 @@ namespace MoskoiBoi
                                 game_zone_bot(x, y, 1);
                                 int x_k = -360 + x * 80;
                                 int y_k = -360 + y * 80;
-                                OtrisovkaKorabl(x_k, y_k, grid);
+                               // OtrisovkaKorabl(x_k, y_k, grid);
                                 shipsBot[paluba]++;
                                 return true;
                             }
@@ -915,11 +913,11 @@ namespace MoskoiBoi
                                         int y_k = -360 + y * 80;
                                         int x_k = -360 + x * 80;
                                         game_zone_bot(x, y, 1);
-                                        OtrisovkaKorabl(x_k, y_k, grid);
+                                       // OtrisovkaKorabl(x_k, y_k, grid);
                                         x++;
                                         x_k = -360 + x * 80;
                                         game_zone_bot(x, y, 1);
-                                        OtrisovkaKorabl(x_k, y_k, grid);
+                                        //OtrisovkaKorabl(x_k, y_k, grid);
                                         shipsBot[paluba]++;
                                         return true;
                                     }
@@ -974,11 +972,11 @@ namespace MoskoiBoi
                                     int x_k = -360 + x * 80;
                                     int y_k = -360 + y * 80;
                                     game_zone_bot(x, y, 1);
-                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    //OtrisovkaKorabl(x_k, y_k, grid);
                                     y++;
                                     y_k = -360 + y * 80;
                                     game_zone_bot(x, y, 1);
-                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    //OtrisovkaKorabl(x_k, y_k, grid);
                                     shipsBot[paluba]++;
                                     return true;
                                 }
@@ -1041,15 +1039,15 @@ namespace MoskoiBoi
                                     int y_k = -360 + y * 80;
                                     int x_k = -360 + x * 80;
                                     game_zone_bot(x, y, 1);
-                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    //OtrisovkaKorabl(x_k, y_k, grid);
                                     x++;
                                     x_k = -360 + x * 80;
                                     game_zone_bot(x, y, 1);
-                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                   // OtrisovkaKorabl(x_k, y_k, grid);
                                     x++;
                                     game_zone_bot(x, y, 1);
                                     x_k = -360 + x * 80;
-                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                    //OtrisovkaKorabl(x_k, y_k, grid);
                                     shipsBot[paluba]++;
                                     return true;
                                 }
@@ -1120,15 +1118,15 @@ namespace MoskoiBoi
                                     int x_k = -360 + x * 80;
                                     int y_k = -360 + y * 80;
                                     game_zone_bot(x, y, 1);
-                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                   // OtrisovkaKorabl(x_k, y_k, grid);
                                     y++;
                                     y_k = -360 + y * 80;
                                     game_zone_bot(x, y, 1);
-                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                   // OtrisovkaKorabl(x_k, y_k, grid);
                                     y++;
                                     y_k = -360 + y * 80;
                                     game_zone_bot(x, y, 1);
-                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                   // OtrisovkaKorabl(x_k, y_k, grid);
                                     shipsBot[paluba]++;
                                     return true;
                                 }
@@ -1301,7 +1299,7 @@ namespace MoskoiBoi
                                     y++;
                                     y_k = -360 + y * 80;
                                     game_zone_bot(x, y, 1);
-                                    OtrisovkaKorabl(x_k, y_k, grid);
+                                   OtrisovkaKorabl(x_k, y_k, grid);
                                     shipsBot[paluba]++;
                                     return true;
                                 }
@@ -1575,15 +1573,8 @@ namespace MoskoiBoi
 
             if (historyGuningPlayer[x, y] == 0)
             {
-                if (arrayBot[x, y] == 0)
-                {
                     historyGuningPlayer[x, y] = 2;
                     return true;
-                }
-                else
-                {
-                    return true;
-                }
             }
             else
             {
